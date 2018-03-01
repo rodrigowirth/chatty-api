@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+
+  api:
+    image: node:9.6.1
+    command: npm start
+    working_dir: /usr/chatty-api
+    volumes:
+      - .:/usr/chatty-api
