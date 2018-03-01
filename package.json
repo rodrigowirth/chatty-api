@@ -1,0 +1,19 @@
+{
+  "name": "chatty-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigowirth/chatty-api.git"
+  },
+  "author": "Rodrigo Wirth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigowirth/chatty-api/issues"
+  },
+  "homepage": "https://github.com/rodrigowirth/chatty-api#readme"
+}
