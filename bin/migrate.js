@@ -1,5 +1,5 @@
 require('babel-core/register');
 require('babel-polyfill');
 
-require('../src')
+require('../db/migrate')
   .default();

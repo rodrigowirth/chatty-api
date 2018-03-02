@@ -7,3 +7,20 @@ services:
     working_dir: /usr/chatty-api
     volumes:
       - .:/usr/chatty-api
+    environment:
+      DB_PORT: tcp://chatty-db:5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_DATABASE: chatty
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:10.2
+    container_name: chatty-db
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: chatty
