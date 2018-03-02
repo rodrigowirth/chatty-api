@@ -1,4 +1,4 @@
-import { BadRequestError, ConflictError } from 'meaning-error';
+import { BadRequestError, ConflictError } from '../errors';
 
 function sanitize(data) {
   return {

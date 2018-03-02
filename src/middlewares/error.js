@@ -1,23 +1,27 @@
-import { MeaningError } from 'meaning-error';
+import { BaseError } from '../services/errors';
 
 function present(err) {
-  if (err instanceof MeaningError) {
+  if (err instanceof BaseError) {
     return {
-      title: err.error,
-      detail: err.message,
+      detail: err.getMessage(),
       status: err.getCode(),
+      title: err.getError(),
     };
   }
 
+  console.error('error: ', err); // eslint-disable-line no-console
+
   return {
     title: 'internal-server-error',
-    detail: 'An unexpected error happened',
+    detail: 'Unexpected Error',
     status: 500,
   };
 }
 
 export default function (err, req, res, next) { // eslint-disable-line no-unused-vars
+  const response = present(err);
+
   return res
-    .status(err.getCode())
-    .send(present(err));
+    .status(response.status)
+    .send(response);
 }

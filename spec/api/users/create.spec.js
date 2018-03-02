@@ -86,7 +86,7 @@ describe('create a user', () => {
     expect(body).to.have.property('budget', 10);
   });
 
-  describe('given an user', () => {
+  describe('with an already created user', () => {
     beforeEach(async () => {
       await request(app)
         .post('/users')
@@ -96,7 +96,7 @@ describe('create a user', () => {
         });
     });
 
-    xit('does not duplicate the username', async () => {
+    it('does not duplicate the username', async () => {
       const { body } = await request(app)
         .post('/users')
         .send({
@@ -105,7 +105,7 @@ describe('create a user', () => {
         })
         .expect(409);
 
-      // expect(body).to.have.property('title', 'username-already-taken');
+      expect(body).to.have.property('title', 'username-already-taken');
       expect(body).to.have.property('status', 409);
       expect(body).to.have.property('detail', 'The username is already taken by another user');
     });

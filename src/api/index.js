@@ -8,6 +8,7 @@ export default (app) => {
   app.use(knex);
 
   app.post('/users', wrap(users.create));
+  app.get('/users/:id', wrap(users.detail));
 
   app.use(error);
 };
