@@ -7,7 +7,8 @@ export function up(knex) {
       table.string('name')
         .notNullable();
       table.string('username')
-        .notNullable();
+        .notNullable()
+        .unique();
       table.integer('budget')
         .notNullable();
       table.timestamp('createdAt')

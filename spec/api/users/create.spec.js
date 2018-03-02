@@ -5,7 +5,7 @@ import '../../spec-helper';
 import app from '../../../src/app';
 
 let db;
-describe('create users api', () => {
+describe('create a user', () => {
   beforeEach(async function () {
     db = this.connection;
   });
@@ -74,11 +74,40 @@ describe('create users api', () => {
     expect(body).to.have.property('detail', 'Username is a required field');
   });
 
-  xit('gives 10 credits to the user', () => {
+  it('gives 10 credits to the user', async () => {
+    const { body } = await request(app)
+      .post('/users')
+      .send({
+        name: 'Peter Gibbons',
+        username: 'peter.gibbons',
+      })
+      .expect(201);
+
+    expect(body).to.have.property('budget', 10);
   });
 
   describe('given an user', () => {
-    xit('does not duplicate the username', () => {
+    beforeEach(async () => {
+      await request(app)
+        .post('/users')
+        .send({
+          name: 'Peter Gibbons',
+          username: 'peter.gibbons',
+        });
+    });
+
+    xit('does not duplicate the username', async () => {
+      const { body } = await request(app)
+        .post('/users')
+        .send({
+          name: 'Peter Gibbons',
+          username: 'peter.gibbons',
+        })
+        .expect(409);
+
+      // expect(body).to.have.property('title', 'username-already-taken');
+      expect(body).to.have.property('status', 409);
+      expect(body).to.have.property('detail', 'The username is already taken by another user');
     });
   });
 });

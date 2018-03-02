@@ -10,12 +10,4 @@ export default (app) => {
   app.post('/users', wrap(users.create));
 
   app.use(error);
-
-  app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-    console.log(err.stack || err); // eslint-disable-line no-console
-
-    if (err) {
-      res.sendStatus(500);
-    }
-  });
 };
