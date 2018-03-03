@@ -9,11 +9,11 @@ function sanitize(data) {
 
 function validate(data) {
   if (!data.name) {
-    throw new BadRequestError('Name is a required field', 'missing-name');
+    throw new BadRequestError('missing-name', 'Name is a required field');
   }
 
   if (!data.username) {
-    throw new BadRequestError('Username is a required field', 'missing-username');
+    throw new BadRequestError('missing-username', 'Username is a required field');
   }
 }
 
@@ -28,7 +28,7 @@ async function save(knex, data) {
     return user;
   } catch (e) {
     if (e && e.code === POSTGRES_UNIQUE_VALIDATION_ERROR && e.constraint === 'users_username_unique') {
-      throw new ConflictError('The username is already taken by another user', 'username-already-taken');
+      throw new ConflictError('username-already-taken', 'The username is already taken by another user');
     }
     throw e;
   }

@@ -1,7 +1,7 @@
 import BaseError from './base';
 
 export default class NotFoundError extends BaseError {
-  constructor(message = 'Bad Request', error = 'bad-request') {
-    super(400, message, error);
+  constructor(error = 'bad-request', message = 'Bad Request') {
+    super(400, error, message);
   }
 }

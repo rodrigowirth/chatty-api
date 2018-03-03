@@ -38,9 +38,7 @@ describe('get a user by id', () => {
       .get('/users/123')
       .expect(404);
 
-    expect(body).to.have.property('title', 'user-not-found');
-    expect(body).to.have.property('status', 404);
-    expect(body).to.have.property('detail', 'The user was not found');
+    expect(body).to.have.error(404, 'user-not-found', 'The user was not found');
   });
 
   it('does not break with a bad id', async () => {
@@ -48,8 +46,6 @@ describe('get a user by id', () => {
       .get('/users/xyz')
       .expect(404);
 
-    expect(body).to.have.property('title', 'user-not-found');
-    expect(body).to.have.property('status', 404);
-    expect(body).to.have.property('detail', 'The user was not found');
+    expect(body).to.have.error(404, 'user-not-found', 'The user was not found');
   });
 });

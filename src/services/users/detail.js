@@ -4,7 +4,7 @@ export default async function (knex, id) {
   const safeId = parseInt(id, 10);
 
   if (Number.isNaN(safeId)) {
-    throw new NotFoundError('The user was not found', 'user-not-found');
+    throw new NotFoundError('user-not-found', 'The user was not found');
   }
 
   const user = await knex('users')
@@ -12,7 +12,7 @@ export default async function (knex, id) {
     .first();
 
   if (!user) {
-    throw new NotFoundError('The user was not found', 'user-not-found');
+    throw new NotFoundError('user-not-found', 'The user was not found');
   }
 
   return user;

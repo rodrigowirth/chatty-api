@@ -1,7 +1,7 @@
 import ExtendableError from 'es6-error';
 
 export default class BaseError extends ExtendableError {
-  constructor(code = 500, message = 'Server Error', error = 'server-error') {
+  constructor(code = 500, error = 'server-error', message = 'Server Error') {
     super(message);
 
     this.code = code;

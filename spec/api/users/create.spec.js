@@ -55,9 +55,7 @@ describe('create a user', () => {
       })
       .expect(400);
 
-    expect(body).to.have.property('title', 'missing-name');
-    expect(body).to.have.property('status', 400);
-    expect(body).to.have.property('detail', 'Name is a required field');
+    expect(body).to.have.error(400, 'missing-name', 'Name is a required field');
   });
 
   it('does not create without a username', async () => {
@@ -69,9 +67,7 @@ describe('create a user', () => {
       })
       .expect(400);
 
-    expect(body).to.have.property('title', 'missing-username');
-    expect(body).to.have.property('status', 400);
-    expect(body).to.have.property('detail', 'Username is a required field');
+    expect(body).to.have.error(400, 'missing-username', 'Username is a required field');
   });
 
   it('gives 10 credits to the user', async () => {
@@ -105,9 +101,7 @@ describe('create a user', () => {
         })
         .expect(409);
 
-      expect(body).to.have.property('title', 'username-already-taken');
-      expect(body).to.have.property('status', 409);
-      expect(body).to.have.property('detail', 'The username is already taken by another user');
+      expect(body).to.have.error(409, 'username-already-taken', 'The username is already taken by another user');
     });
   });
 });

@@ -1,5 +1,10 @@
 import knex from 'knex';
+import chai from 'chai'; // eslint-disable-line
+
 import config from '../src/config';
+import chaiExtensions from './chai-extensions';
+
+chai.use(chaiExtensions);
 
 const truncateTablesSQL =
   `SELECT Concat('TRUNCATE TABLE "' ,table_schema, '"."', TABLE_NAME, '" RESTART IDENTITY CASCADE;') query
