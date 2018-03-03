@@ -7,8 +7,9 @@
     "eslint": "eslint src/ spec/",
     "migrate": "node ./bin/migrate.js",
     "mocha": "mocha --exit --require babel-polyfill --require babel-core/register --recursive --watch-extensions .spec.js ./spec",
-    "start": "node ./bin/index.js",
-    "test": "npm run eslint && npm run migrate && npm run mocha"
+    "start": "npm run wait-db && node ./bin/index.js",
+    "test": "npm run eslint && npm run wait-db && npm run migrate && npm run mocha",
+    "wait-db": "./bin/waitforit --host=chatty-db --port=5432 --timeout=120"
   },
   "repository": {
     "type": "git",
