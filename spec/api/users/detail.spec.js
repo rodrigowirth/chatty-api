@@ -44,8 +44,8 @@ describe('get a user by id', () => {
   it('does not break with a bad id', async () => {
     const { body } = await request(app)
       .get('/users/xyz')
-      .expect(400);
+      .expect(404);
 
-    expect(body).to.have.error(400, 'invalid-data', '"id" must be a number');
+    expect(body).to.have.error(404, 'user-not-found', 'The user was not found');
   });
 });
