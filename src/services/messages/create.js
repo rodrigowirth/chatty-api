@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { NotFoundError } from '../errors';
+import { BadRequestError, NotFoundError } from '../errors';
 import validate from '../validate';
 
 const schema = Joi.object().keys({
@@ -33,6 +33,10 @@ export default async function (knex, data) {
 
   if (!sender) {
     throw new NotFoundError('sender-not-found', 'the sender does not exist');
+  }
+
+  if (!sender.budget) {
+    throw new BadRequestError('no-budget', 'User has no budget');
   }
 
   const recipient = await knex('users')

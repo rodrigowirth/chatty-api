@@ -166,7 +166,7 @@ describe('send message from one user to another', () => {
       expect(recipient.budget).to.be.eql(9);
     });
 
-    describe('the recipient has no budget', () => {
+    describe('recipient has no budget', () => {
       beforeEach(async () => {
         await db('users')
           .update({ budget: 0 })
@@ -188,6 +188,27 @@ describe('send message from one user to another', () => {
           .first();
 
         expect(recipient.budget).to.be.eql(0);
+      });
+    });
+
+    describe('sender has no budget', () => {
+      beforeEach(async () => {
+        await db('users')
+          .update({ budget: 0 })
+          .where({ id: senderId });
+      });
+
+      it('does not create', async () => {
+        const { body } = await request(app)
+          .post('/messages')
+          .send({
+            from: senderId,
+            to: recipientId,
+            body: 'message',
+          })
+          .expect(400);
+
+        expect(body).to.have.error(400, 'no-budget', 'User has no budget');
       });
     });
   });
