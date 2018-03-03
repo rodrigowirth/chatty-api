@@ -1,21 +1,12 @@
 import Joi from 'joi';
 
-import { BadRequestError, ConflictError } from '../errors';
+import validate from '../validate';
+import { ConflictError } from '../errors';
 
 const schema = Joi.object().keys({
   name: Joi.string().required(),
   username: Joi.string().trim().lowercase().required(),
 });
-
-function validate(data) {
-  const { value, error } = Joi.validate(data, schema);
-
-  if (error) {
-    throw new BadRequestError(error);
-  }
-
-  return value;
-}
 
 async function save(knex, data) {
   const POSTGRES_UNIQUE_VALIDATION_ERROR = '23505';
@@ -35,7 +26,7 @@ async function save(knex, data) {
 }
 
 export default async function (knex, data) {
-  const valid = validate(data);
+  const valid = validate(data, schema);
   valid.budget = 10;
   return save(knex, valid);
 }

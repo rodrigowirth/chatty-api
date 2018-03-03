@@ -12,6 +12,7 @@ export default (app) => {
   app.get('/users/:id', wrap(users.detail));
 
   app.post('/messages', wrap(messages.create));
+  app.get('/messages', wrap(messages.list));
 
   app.use(error);
 };

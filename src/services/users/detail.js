@@ -1,11 +1,14 @@
+import Joi from 'joi';
+
+import validate from '../validate';
 import { NotFoundError } from '../errors';
 
-export default async function (knex, id) {
-  const safeId = parseInt(id, 10);
+const schema = Joi.object().keys({
+  id: Joi.number().integer().required(),
+});
 
-  if (Number.isNaN(safeId)) {
-    throw new NotFoundError('user-not-found', 'The user was not found');
-  }
+export default async function (knex, id) {
+  const { id: safeId } = validate({ id }, schema);
 
   const user = await knex('users')
     .where({ id: safeId })

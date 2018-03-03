@@ -1,22 +1,13 @@
 import Joi from 'joi';
 
-import { BadRequestError, NotFoundError } from '../errors';
+import { NotFoundError } from '../errors';
+import validate from '../validate';
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
   to: Joi.string().required(),
   body: Joi.string().required().max(200),
 });
-
-function validate(data) {
-  const { value, error } = Joi.validate(data, schema);
-
-  if (error) {
-    throw new BadRequestError(error);
-  }
-
-  return value;
-}
 
 async function save(knex, data) {
   const [message] = await knex('messages')
@@ -27,7 +18,7 @@ async function save(knex, data) {
 }
 
 export default async function (knex, data) {
-  const valid = validate(data);
+  const valid = validate(data, schema);
 
   const sender = await knex('users')
     .where({ id: valid.from })
