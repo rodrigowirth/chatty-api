@@ -9,6 +9,13 @@ const schema = Joi.object().keys({
   body: Joi.string().required().max(200),
 });
 
+function charge(knex, recipientId) {
+  return knex('users')
+    .decrement('budget', 1)
+    .where({ id: recipientId })
+    .andWhere('budget', '>', 0);
+}
+
 async function save(knex, data) {
   const [message] = await knex('messages')
     .insert(data)
@@ -36,5 +43,9 @@ export default async function (knex, data) {
     throw new NotFoundError('recipient-not-found', 'the recipient does not exist');
   }
 
-  return save(knex, data);
+  const message = await save(knex, data);
+
+  await charge(knex, data.to);
+
+  return message;
 }

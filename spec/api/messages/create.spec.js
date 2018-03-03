@@ -45,13 +45,13 @@ describe('send message from one user to another', () => {
         })
         .expect(201);
 
-      const user = await db('messages').first();
+      const message = await db('messages').first();
 
-      expect(user).to.have.property('id');
-      expect(user).to.have.property('from', parseInt(senderId, 10));
-      expect(user).to.have.property('to', parseInt(recipientId, 10));
-      expect(user).to.have.property('body', 'message');
-      expect(user).to.have.property('sentAt');
+      expect(message).to.have.property('id');
+      expect(message).to.have.property('from', parseInt(senderId, 10));
+      expect(message).to.have.property('to', parseInt(recipientId, 10));
+      expect(message).to.have.property('body', 'message');
+      expect(message).to.have.property('sentAt');
     });
 
     it('returns the details', async () => {
@@ -147,6 +147,48 @@ describe('send message from one user to another', () => {
         .expect(404);
 
       expect(body).to.have.error(404, 'recipient-not-found', 'the recipient does not exist');
+    });
+
+    it('charges 1 credit from recipients budget', async () => {
+      await request(app)
+        .post('/messages')
+        .send({
+          from: senderId,
+          to: recipientId,
+          body: 'message',
+        })
+        .expect(201);
+
+      const recipient = await db('users')
+        .where({ id: recipientId })
+        .first();
+
+      expect(recipient.budget).to.be.eql(9);
+    });
+
+    describe('the recipient has no budget', () => {
+      beforeEach(async () => {
+        await db('users')
+          .update({ budget: 0 })
+          .where({ id: recipientId });
+      });
+
+      it('does not charge 1 credit from recipients budget', async () => {
+        await request(app)
+          .post('/messages')
+          .send({
+            from: senderId,
+            to: recipientId,
+            body: 'message',
+          })
+          .expect(201);
+
+        const recipient = await db('users')
+          .where({ id: recipientId })
+          .first();
+
+        expect(recipient.budget).to.be.eql(0);
+      });
     });
   });
 });
