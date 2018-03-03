@@ -55,7 +55,7 @@ describe('create a user', () => {
       })
       .expect(400);
 
-    expect(body).to.have.error(400, 'missing-name', 'Name is a required field');
+    expect(body).to.have.error(400, 'invalid-data', '"name" is not allowed to be empty');
   });
 
   it('does not create without a username', async () => {
@@ -67,7 +67,7 @@ describe('create a user', () => {
       })
       .expect(400);
 
-    expect(body).to.have.error(400, 'missing-username', 'Username is a required field');
+    expect(body).to.have.error(400, 'invalid-data', '"username" is not allowed to be empty');
   });
 
   it('gives 10 credits to the user', async () => {
@@ -103,5 +103,33 @@ describe('create a user', () => {
 
       expect(body).to.have.error(409, 'username-already-taken', 'The username is already taken by another user');
     });
+  });
+
+  it('trims the username', async () => {
+    await request(app)
+      .post('/users')
+      .send({
+        name: 'Peter Gibbons',
+        username: ' peter.gibbons ',
+      })
+      .expect(201);
+
+    const user = await db('users').first();
+
+    expect(user).to.have.property('username', 'peter.gibbons');
+  });
+
+  it('make the username lower case', async () => {
+    await request(app)
+      .post('/users')
+      .send({
+        name: 'Peter Gibbons',
+        username: 'Peter.gibbons',
+      })
+      .expect(201);
+
+    const user = await db('users').first();
+
+    expect(user).to.have.property('username', 'peter.gibbons');
   });
 });

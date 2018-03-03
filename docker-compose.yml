@@ -17,6 +17,17 @@ services:
 
   postgres:
     image: postgres:10.2
+    command: postgres
+      -D /run/postgres-data
+      --fsync=off
+      --shared-buffers=128kB
+      --temp-buffers=800kB
+      --work-mem=64kB
+      --maintenance-work-mem=1024kB
+      --wal-buffers=32kB
+      --seq-page-cost=0.01
+      --random-page-cost=0.01
+      --effective-cache-size=64kB
     container_name: chatty-db
     ports:
       - 5432

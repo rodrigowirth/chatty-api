@@ -1,20 +1,20 @@
+import Joi from 'joi';
+
 import { BadRequestError, ConflictError } from '../errors';
 
-function sanitize(data) {
-  return {
-    name: data.name,
-    username: data.username,
-  };
-}
+const schema = Joi.object().keys({
+  name: Joi.string().required(),
+  username: Joi.string().trim().lowercase().required(),
+});
 
 function validate(data) {
-  if (!data.name) {
-    throw new BadRequestError('missing-name', 'Name is a required field');
+  const { value, error } = Joi.validate(data, schema);
+
+  if (error) {
+    throw new BadRequestError(error);
   }
 
-  if (!data.username) {
-    throw new BadRequestError('missing-username', 'Username is a required field');
-  }
+  return value;
 }
 
 async function save(knex, data) {
@@ -35,8 +35,7 @@ async function save(knex, data) {
 }
 
 export default async function (knex, data) {
-  const sanitized = sanitize(data);
-  validate(sanitized);
-  sanitized.budget = 10;
-  return save(knex, sanitized);
+  const valid = validate(data);
+  valid.budget = 10;
+  return save(knex, valid);
 }
