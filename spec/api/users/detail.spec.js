@@ -4,7 +4,7 @@ import request from 'supertest';
 import '../../spec-helper';
 import app from '../../../src/app';
 
-describe('get a user by id', () => {
+describe('get an user by id', () => {
   describe('with an user', () => {
     let userId;
 

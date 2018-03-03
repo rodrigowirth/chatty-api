@@ -7,7 +7,7 @@ const schema = Joi.object().keys({
 });
 
 function throwNotFound() {
-  throw new NotFoundError('user-not-found', 'The user was not found');
+  throw new NotFoundError('message-not-found', 'The message was not found');
 }
 
 function validate(data) {
@@ -23,13 +23,13 @@ function validate(data) {
 export default async function (knex, id) {
   const { id: safeId } = validate({ id }, schema);
 
-  const user = await knex('users')
+  const message = await knex('messages')
     .where({ id: safeId })
     .first();
 
-  if (!user) {
+  if (!message) {
     throwNotFound();
   }
 
-  return user;
+  return message;
 }

@@ -13,6 +13,7 @@ export default (app) => {
 
   app.post('/messages', wrap(messages.create));
   app.get('/messages', wrap(messages.list));
+  app.get('/message/:id', wrap(messages.detail));
 
   app.use(error);
 };
