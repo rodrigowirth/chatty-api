@@ -5,7 +5,7 @@ import '../../spec-helper';
 import app from '../../../src/app';
 
 let db;
-describe('create a user', () => {
+describe('create an user', () => {
   beforeEach(async function () {
     db = this.connection;
   });
