@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker-compose run api npm install
+
+script:
+  - docker-compose run api npm test
