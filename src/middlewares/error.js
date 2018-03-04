@@ -1,3 +1,4 @@
+import config from '../config';
 import { BaseError } from '../services/errors';
 
 function buildUnexpectedError() {
@@ -44,6 +45,7 @@ function present(err) {
 
 export default function (err, req, res, next) { // eslint-disable-line no-unused-vars
   const response = present(err);
+  response.instance = config.docsUrl;
 
   return res
     .status(response.status)

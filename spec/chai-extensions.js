@@ -1,3 +1,5 @@
+import config from '../src/config';
+
 export default function (chai, utils) { // eslint-disable-line no-unused-vars
   const { Assertion } = chai;
   Assertion.addMethod('error', function (status, title, message) {
@@ -21,6 +23,12 @@ export default function (chai, utils) { // eslint-disable-line no-unused-vars
       hasDetail,
       `expected it detail(s) to have message "${message}" but got "${error.details}"`,
       `expected it detail(s) to not have message "${message}" but got "${error.details}"`,
+    );
+
+    this.assert(
+      error.instance === config.docsUrl,
+      `expected it to have instance "${config.docsUrl}" but got "${error.instance}"`,
+      `expected it to not have instance "${config.docsUrl}" but got "${error.instance}"`,
     );
   });
 }

@@ -6,15 +6,17 @@ services:
     command: npm start
     container_name: chatty-api
     working_dir: /usr/chatty-api
-    volumes:
-      - .:/usr/chatty-api
     ports:
       - 3000:3000
+    volumes:
+      - .:/usr/chatty-api
     environment:
       DB_PORT: tcp://chatty-db:5432
       DB_USER: user
       DB_PASSWORD: password
       DB_DATABASE: chatty
+      CORS: 'true'
+      DOCS_URL: http://localhost:7070
     depends_on:
       - postgres
 
@@ -31,3 +33,12 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: chatty
       PGDATA: /run/postgres-data
+
+  swagger:
+    image: swaggerapi/swagger-ui:v3.9.1
+    ports:
+      - 7070:8080
+    volumes:
+      - ./docs:/openapi
+    environment:
+      SWAGGER_JSON: /openapi/openapi.yaml

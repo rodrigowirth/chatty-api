@@ -1,3 +1,6 @@
+import cors from 'cors';
+
+import config from '../config';
 import error from '../middlewares/error';
 import knex from '../middlewares/knex';
 import * as messages from './messages';
@@ -6,6 +9,10 @@ import * as users from './users';
 const wrap = fn => (...args) => fn(...args).catch(args[2]);
 
 export default (app) => {
+  if (config.cors) {
+    app.use(cors());
+  }
+
   app.use(knex);
 
   app.post('/users', wrap(users.create));

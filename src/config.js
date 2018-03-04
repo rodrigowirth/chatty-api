@@ -1,6 +1,8 @@
 import url from 'url';
 
 export default {
+  cors: process.env.CORS === 'true',
+  docsUrl: process.env.DOCS_URL,
   knex: {
     client: 'pg',
     debug: false,
