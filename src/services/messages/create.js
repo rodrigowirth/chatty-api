@@ -9,19 +9,20 @@ const schema = Joi.object().keys({
   body: Joi.string().required().max(200),
 });
 
-function charge(knex, recipientId) {
-  return knex('users')
-    .decrement('budget', 1)
-    .where({ id: recipientId })
-    .andWhere('budget', '>', 0);
-}
+function save(knex, data) {
+  return knex.transaction(async (transaction) => {
+    const [message] = await knex('messages')
+      .transacting(transaction)
+      .insert(data)
+      .returning('*');
 
-async function save(knex, data) {
-  const [message] = await knex('messages')
-    .insert(data)
-    .returning('*');
+    await knex('users')
+      .decrement('budget', 1)
+      .where({ id: data.to })
+      .andWhere('budget', '>', 0);
 
-  return message;
+    return message;
+  });
 }
 
 export default async function (knex, data) {
@@ -47,9 +48,5 @@ export default async function (knex, data) {
     throw new NotFoundError('recipient-not-found', 'the recipient does not exist');
   }
 
-  const message = await save(knex, data);
-
-  await charge(knex, data.to);
-
-  return message;
+  return save(knex, valid);
 }
