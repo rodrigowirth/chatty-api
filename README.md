@@ -12,4 +12,4 @@
 ## Running the application
 - `docker-compose up`
 - Wait for the start up
-- Api will be available at http://localhost:3000
+- Chatty API will be available at http://localhost:3000
