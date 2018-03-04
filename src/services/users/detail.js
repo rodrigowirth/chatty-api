@@ -11,7 +11,7 @@ function throwNotFound() {
 }
 
 function validate(data) {
-  const { value, error } = Joi.validate(data, schema);
+  const { value, error } = Joi.validate(data, schema, { abortEarly: false });
 
   if (error) {
     throwNotFound();
@@ -21,7 +21,7 @@ function validate(data) {
 }
 
 export default async function (knex, id) {
-  const { id: safeId } = validate({ id }, schema);
+  const { id: safeId } = validate({ id });
 
   const user = await knex('users')
     .where({ id: safeId })
