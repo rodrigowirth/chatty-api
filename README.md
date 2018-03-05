@@ -6,6 +6,9 @@
 - Docker 17.06.0+
 - Docker Compose 1.14.0+
 
+## Installing node dependencies (required for running tests and application)
+- `docker-compose run api npm install`
+
 ## Running the tests
 - `docker-compose run api npm test`
 
